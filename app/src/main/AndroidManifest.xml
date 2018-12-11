@@ -12,14 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.QuestionListActivity">
+        <activity android:name=".screen.questionslist.QuestionListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.QuestionDetailsActivity" />
+        <activity android:name=".screen.questionsdetils.QuestionDetailsActivity" />
     </application>
 
 </manifest>
