@@ -3,60 +3,52 @@ package com.example.dagg.udaggerdemo.screen.questionsdetils;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.view.LayoutInflater;
-import android.widget.TextView;
 
-import com.example.dagg.udaggerdemo.R;
 import com.example.dagg.udaggerdemo.fragment.ServerErrorDialogFragment;
+import com.example.dagg.udaggerdemo.injections.Application;
+import com.example.dagg.udaggerdemo.model.QuestionWithBody;
 import com.example.dagg.udaggerdemo.network.SingleQuestionResponseSchema;
-import com.example.dagg.udaggerdemo.network.StackoverflowApi;
-import com.example.dagg.udaggerdemo.utils.Constants;
+import com.example.dagg.udaggerdemo.questions.FetchQuestionDetails;
+import com.example.dagg.udaggerdemo.screen.common.dialogue.DialogManager;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class QuestionDetailsActivity extends AppCompatActivity
-implements Callback<SingleQuestionResponseSchema>, QuestionDetailsViewMvc.Listener {
+implements QuestionDetailsViewMvc.Listener, FetchQuestionDetails.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
 
-    private StackoverflowApi mStackoverflowApi;
-
     private Call<SingleQuestionResponseSchema> mCall;
-
     private String mQuestionId;
 
     private QuestionDetailsViewMvc mViewMvc;
+    private FetchQuestionDetails mFetchQuestionDetails;
+    private DialogManager mDialogueManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mViewMvc = new QuestionDetailsViewMvcImpl(LayoutInflater.from(this), null);
-        setContentView(mViewMvc.getRootView());
-
-        Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
-        mStackoverflowApi = retrofit.create(StackoverflowApi.class);
-
+        init();
         //noinspection ConstantConditions
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
 
+    }
+
+    public void init() {
+        mViewMvc = new QuestionDetailsViewMvcImpl(LayoutInflater.from(this), null);
+        mFetchQuestionDetails = new FetchQuestionDetails(((Application) getApplication()).getStackOverflowApi());
+        mDialogueManager = new DialogManager(getSupportFragmentManager());
+        setContentView(mViewMvc.getRootView());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         mViewMvc.registerListener(this);
-        mCall = mStackoverflowApi.questionDetails(mQuestionId);
-        mCall.enqueue(this);
+        mFetchQuestionDetails.registerListener(this);
+        mFetchQuestionDetails.fetchQuestionDetailsAndNotify(mQuestionId);
     }
 
     @Override
@@ -69,21 +61,12 @@ implements Callback<SingleQuestionResponseSchema>, QuestionDetailsViewMvc.Listen
     }
 
     @Override
-    public void onResponse(Call<SingleQuestionResponseSchema> call, Response<SingleQuestionResponseSchema> response) {
-        SingleQuestionResponseSchema questionResponseSchema;
-        if (response.isSuccessful() && (questionResponseSchema = response.body()) != null) {
-            mViewMvc.bindQuestion(questionResponseSchema.getQuestion());
-        }else {
-            onFailure(call, null);
-        }
+    public void onFetchOfQuestionDetailsSucceeded(QuestionWithBody question) {
+        mViewMvc.bindQuestion(question);
     }
 
     @Override
-    public void onFailure(Call<SingleQuestionResponseSchema> call, Throwable t) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-            .add(ServerErrorDialogFragment.newInstance(), null)
-            .commitAllowingStateLoss();
+    public void onFetchOfQuestionDetailsFailed() {
+        mDialogueManager.showRetainedDialogWithId(ServerErrorDialogFragment.newInstance(), "");
     }
-
 }
