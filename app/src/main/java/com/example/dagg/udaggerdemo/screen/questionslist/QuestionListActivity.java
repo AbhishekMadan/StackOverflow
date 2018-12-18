@@ -15,6 +15,7 @@ import com.example.dagg.udaggerdemo.injections.Application;
 import com.example.dagg.udaggerdemo.model.Question;
 import com.example.dagg.udaggerdemo.network.QuestionsListResponseSchema;
 import com.example.dagg.udaggerdemo.questions.FetchQuesitionList;
+import com.example.dagg.udaggerdemo.screen.common.activity.BaseActivity;
 import com.example.dagg.udaggerdemo.screen.common.dialogue.DialogManager;
 import com.example.dagg.udaggerdemo.screen.questionsdetils.QuestionDetailsActivity;
 
@@ -22,7 +23,7 @@ import java.util.List;
 
 import retrofit2.Call;
 
-public class QuestionListActivity extends AppCompatActivity
+public class QuestionListActivity extends BaseActivity
     implements QuestionsListViewMvc.Listener, FetchQuesitionList.Listener {
 
     private Call<QuestionsListResponseSchema> mCall;
@@ -59,8 +60,8 @@ public class QuestionListActivity extends AppCompatActivity
 
     private void init() {
         mViewMvc = new QuestionsListViewMvcImpl(LayoutInflater.from(this), null);
-        mFetchQuestionList = new FetchQuesitionList(((Application) getApplication()).getStackOverflowApi());
-        mDialogueManager = new DialogManager(getSupportFragmentManager());
+        mFetchQuestionList = getCompositionRoot().getQuestionList();
+        mDialogueManager = getPresentationCompositionRoot().getDialogueManager();
         setContentView(mViewMvc.getRootView());
     }
 

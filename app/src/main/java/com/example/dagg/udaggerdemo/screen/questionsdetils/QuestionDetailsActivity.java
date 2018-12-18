@@ -10,11 +10,12 @@ import com.example.dagg.udaggerdemo.injections.Application;
 import com.example.dagg.udaggerdemo.model.QuestionWithBody;
 import com.example.dagg.udaggerdemo.network.SingleQuestionResponseSchema;
 import com.example.dagg.udaggerdemo.questions.FetchQuestionDetails;
+import com.example.dagg.udaggerdemo.screen.common.activity.BaseActivity;
 import com.example.dagg.udaggerdemo.screen.common.dialogue.DialogManager;
 
 import retrofit2.Call;
 
-public class QuestionDetailsActivity extends AppCompatActivity
+public class QuestionDetailsActivity extends BaseActivity
 implements QuestionDetailsViewMvc.Listener, FetchQuestionDetails.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
@@ -38,8 +39,8 @@ implements QuestionDetailsViewMvc.Listener, FetchQuestionDetails.Listener {
 
     public void init() {
         mViewMvc = new QuestionDetailsViewMvcImpl(LayoutInflater.from(this), null);
-        mFetchQuestionDetails = new FetchQuestionDetails(((Application) getApplication()).getStackOverflowApi());
-        mDialogueManager = new DialogManager(getSupportFragmentManager());
+        mFetchQuestionDetails = getCompositionRoot().getQuestionDetails();
+        mDialogueManager = getPresentationCompositionRoot().getDialogueManager();
         setContentView(mViewMvc.getRootView());
     }
 
