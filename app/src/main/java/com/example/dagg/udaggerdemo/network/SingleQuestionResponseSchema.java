@@ -1,6 +1,6 @@
 package com.example.dagg.udaggerdemo.network;
 
-import com.example.dagg.udaggerdemo.model.QuestionWithBody;
+import com.example.dagg.udaggerdemo.model.QuestionSchema;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Collections;
@@ -9,13 +9,13 @@ import java.util.List;
 public class SingleQuestionResponseSchema {
 
     @SerializedName("items")
-    private final List<QuestionWithBody> mQuestions;
+    private final List<QuestionSchema> mQuestions;
 
-    public SingleQuestionResponseSchema(QuestionWithBody question) {
+    public SingleQuestionResponseSchema(QuestionSchema question) {
         mQuestions = Collections.singletonList(question);
     }
 
-    public QuestionWithBody getQuestion() {
+    public QuestionSchema getQuestion() {
         return mQuestions.get(0);
     }
 }

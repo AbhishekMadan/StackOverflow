@@ -1,6 +1,7 @@
 package com.example.dagg.udaggerdemo.network;
 
 import com.example.dagg.udaggerdemo.model.Question;
+import com.example.dagg.udaggerdemo.model.QuestionSchema;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,13 +9,13 @@ import java.util.List;
 public class QuestionsListResponseSchema {
 
     @SerializedName("items")
-    private final List<Question> mQuestions;
+    private final List<QuestionSchema> mQuestions;
 
-    public QuestionsListResponseSchema(List<Question> questions) {
+    public QuestionsListResponseSchema(List<QuestionSchema> questions) {
         mQuestions = questions;
     }
 
-    public List<Question> getQuestions() {
+    public List<QuestionSchema> getQuestions() {
         return mQuestions;
     }
 }

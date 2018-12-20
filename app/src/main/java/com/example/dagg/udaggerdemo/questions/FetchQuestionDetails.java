@@ -2,7 +2,8 @@ package com.example.dagg.udaggerdemo.questions;
 
 import android.support.annotation.Nullable;
 
-import com.example.dagg.udaggerdemo.model.QuestionWithBody;
+import com.example.dagg.udaggerdemo.model.QuestionDetails;
+import com.example.dagg.udaggerdemo.model.QuestionSchema;
 import com.example.dagg.udaggerdemo.network.SingleQuestionResponseSchema;
 import com.example.dagg.udaggerdemo.network.StackoverflowApi;
 import com.example.dagg.udaggerdemo.screen.common.BaseObservable;
@@ -14,7 +15,7 @@ import retrofit2.Response;
 public class FetchQuestionDetails extends BaseObservable<FetchQuestionDetails.Listener> {
 
     public interface Listener {
-        void onFetchOfQuestionDetailsSucceeded(QuestionWithBody question);
+        void onFetchOfQuestionDetailsSucceeded(QuestionDetails question);
         void onFetchOfQuestionDetailsFailed();
     }
 
@@ -36,7 +37,7 @@ public class FetchQuestionDetails extends BaseObservable<FetchQuestionDetails.Li
             @Override
             public void onResponse(Call<SingleQuestionResponseSchema> call, Response<SingleQuestionResponseSchema> response) {
                 if (response.isSuccessful()) {
-                    notifySucceeded(response.body().getQuestion());
+                    notifySucceeded(parseQuestionSchema(response.body().getQuestion()));
                 } else {
                     notifyFailed();
                 }
@@ -55,9 +56,15 @@ public class FetchQuestionDetails extends BaseObservable<FetchQuestionDetails.Li
         }
     }
 
-    private void notifySucceeded(QuestionWithBody question) {
+    private QuestionDetails parseQuestionSchema(QuestionSchema schema) {
+        return new QuestionDetails(schema.getId(), schema.getTitle(),
+            schema.getBody(), schema.getOwner().getUserDisplayName(),
+            schema.getOwner().getUserAvatarUrl());
+    }
+
+    private void notifySucceeded(QuestionDetails questionDetails) {
         for (Listener listener : getListeners()) {
-            listener.onFetchOfQuestionDetailsSucceeded(question);
+            listener.onFetchOfQuestionDetailsSucceeded(questionDetails);
         }
     }
 

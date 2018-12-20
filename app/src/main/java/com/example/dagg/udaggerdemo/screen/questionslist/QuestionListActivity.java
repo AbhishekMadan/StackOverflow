@@ -18,6 +18,7 @@ import com.example.dagg.udaggerdemo.questions.FetchQuesitionList;
 import com.example.dagg.udaggerdemo.screen.common.activity.BaseActivity;
 import com.example.dagg.udaggerdemo.screen.common.dialogue.DialogManager;
 import com.example.dagg.udaggerdemo.screen.questionsdetils.QuestionDetailsActivity;
+import com.example.dagg.udaggerdemo.screen.questionsdetils.QuestionDetailsViewMvc;
 
 import java.util.List;
 
@@ -59,7 +60,8 @@ public class QuestionListActivity extends BaseActivity
     }
 
     private void init() {
-        mViewMvc = new QuestionsListViewMvcImpl(LayoutInflater.from(this), null);
+        mViewMvc = getPresentationCompositionRoot().getViewMvcFactory().newInstance(QuestionsListViewMvc.class,
+            null, getPresentationCompositionRoot().getImageLoader());
         mFetchQuestionList = getCompositionRoot().getQuestionList();
         mDialogueManager = getPresentationCompositionRoot().getDialogueManager();
         setContentView(mViewMvc.getRootView());

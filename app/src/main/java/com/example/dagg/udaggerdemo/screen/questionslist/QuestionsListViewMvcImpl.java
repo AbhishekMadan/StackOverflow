@@ -13,7 +13,7 @@ import com.example.dagg.udaggerdemo.screen.common.mvcview.BaseViewMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-class QuestionsListViewMvcImpl extends BaseViewMvc<QuestionsListViewMvc.Listener>
+public class QuestionsListViewMvcImpl extends BaseViewMvc<QuestionsListViewMvc.Listener>
     implements QuestionsListViewMvc {
 
     private RecyclerView mRecyclerView;

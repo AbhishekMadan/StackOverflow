@@ -1,13 +1,9 @@
 package com.example.dagg.udaggerdemo.screen.questionsdetils;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 
 import com.example.dagg.udaggerdemo.fragment.ServerErrorDialogFragment;
-import com.example.dagg.udaggerdemo.injections.Application;
-import com.example.dagg.udaggerdemo.model.QuestionWithBody;
+import com.example.dagg.udaggerdemo.model.QuestionDetails;
 import com.example.dagg.udaggerdemo.network.SingleQuestionResponseSchema;
 import com.example.dagg.udaggerdemo.questions.FetchQuestionDetails;
 import com.example.dagg.udaggerdemo.screen.common.activity.BaseActivity;
@@ -38,7 +34,8 @@ implements QuestionDetailsViewMvc.Listener, FetchQuestionDetails.Listener {
     }
 
     public void init() {
-        mViewMvc = new QuestionDetailsViewMvcImpl(LayoutInflater.from(this), null);
+        mViewMvc = getPresentationCompositionRoot().getViewMvcFactory().newInstance(QuestionDetailsViewMvc.class,
+            null, getPresentationCompositionRoot().getImageLoader());
         mFetchQuestionDetails = getCompositionRoot().getQuestionDetails();
         mDialogueManager = getPresentationCompositionRoot().getDialogueManager();
         setContentView(mViewMvc.getRootView());
@@ -62,8 +59,8 @@ implements QuestionDetailsViewMvc.Listener, FetchQuestionDetails.Listener {
     }
 
     @Override
-    public void onFetchOfQuestionDetailsSucceeded(QuestionWithBody question) {
-        mViewMvc.bindQuestion(question);
+    public void onFetchOfQuestionDetailsSucceeded(QuestionDetails questionDetails) {
+        mViewMvc.bindQuestion(questionDetails);
     }
 
     @Override

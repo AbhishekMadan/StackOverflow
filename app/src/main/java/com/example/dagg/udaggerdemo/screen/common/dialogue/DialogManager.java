@@ -25,15 +25,6 @@ public class DialogManager {
         }
     }
 
-    public String getCurrentlyShownDialogId() {
-        if (mCurrentlyShownDialog == null || mCurrentlyShownDialog.getArguments() == null ||
-            !mCurrentlyShownDialog.getArguments().containsKey(ARGUMENT_DIALOG_ID)) {
-            return "";
-        } else {
-            return mCurrentlyShownDialog.getArguments().getString(ARGUMENT_DIALOG_ID);
-        }
-    }
-
     public void dismissCurrentlyShownDialog() {
         if (mCurrentlyShownDialog != null) {
             mCurrentlyShownDialog.dismissAllowingStateLoss();

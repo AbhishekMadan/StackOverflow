@@ -3,10 +3,12 @@ package com.example.dagg.udaggerdemo.questions;
 import android.support.annotation.Nullable;
 
 import com.example.dagg.udaggerdemo.model.Question;
+import com.example.dagg.udaggerdemo.model.QuestionSchema;
 import com.example.dagg.udaggerdemo.network.QuestionsListResponseSchema;
 import com.example.dagg.udaggerdemo.network.StackoverflowApi;
 import com.example.dagg.udaggerdemo.screen.common.BaseObservable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class FetchQuesitionList extends BaseObservable<FetchQuesitionList.Listen
             @Override
             public void onResponse(Call<QuestionsListResponseSchema> call, Response<QuestionsListResponseSchema> response) {
                 if (response.isSuccessful()) {
-                    notifySuccessful(response.body().getQuestions());
+                    notifySuccessful(questionsFromQuestionsSchemas(response.body().getQuestions()));
                 } else {
                     onFailure(call, null);
                 }
@@ -49,6 +51,14 @@ public class FetchQuesitionList extends BaseObservable<FetchQuesitionList.Listen
                 notifyFailed();
             }
         });
+    }
+
+    private List<Question> questionsFromQuestionsSchemas(List<QuestionSchema> questionSchemas) {
+        List<Question> questions = new ArrayList<>(questionSchemas.size());
+        for (QuestionSchema questionSchema : questionSchemas) {
+            questions.add(new Question(questionSchema.getId(), questionSchema.getTitle()));
+        }
+        return questions;
     }
 
     private void cancelCurrentRequest() {
