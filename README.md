@@ -18,3 +18,9 @@ Dec 19, 2018:
 - Added some new UI. Show avatar of the user who asked the question.
  Lib:
   1. Glide
+  
+Dec 24, 2018:
+- Adding Dagger dependency Injection
+- Composition CompositionRoot using Dagger
+Lib:
+  1. Dagger 2  
