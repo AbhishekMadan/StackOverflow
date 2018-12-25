@@ -4,9 +4,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
-import com.example.dagg.udaggerdemo.injections.application.ApplicationComponent;
-import com.example.dagg.udaggerdemo.questions.FetchQuesitionList;
-import com.example.dagg.udaggerdemo.questions.FetchQuestionDetails;
 import com.example.dagg.udaggerdemo.screen.common.ImageLoader;
 import com.example.dagg.udaggerdemo.screen.common.dialogue.DialogManager;
 import com.example.dagg.udaggerdemo.screen.common.mvcview.ViewMvcFactoy;
@@ -18,11 +15,9 @@ import dagger.Provides;
 public class PresentationModule {
 
     private final FragmentActivity mActivity;
-    private final ApplicationComponent mApplicationComponent;
 
-    public PresentationModule(FragmentActivity activity, ApplicationComponent applicationComponent) {
+    public PresentationModule(FragmentActivity activity) {
         this.mActivity = activity;
-        this.mApplicationComponent = applicationComponent;
     }
 
     @Provides
@@ -48,15 +43,5 @@ public class PresentationModule {
     @Provides
     public ImageLoader getImageLoader() {
         return new ImageLoader(mActivity);
-    }
-
-    @Provides
-    public FetchQuesitionList getQuestionList() {
-        return mApplicationComponent.getQuestionList();
-    }
-
-    @Provides
-    public FetchQuestionDetails getQuestionDetails() {
-        return mApplicationComponent.getQuestionDetails();
     }
 }
