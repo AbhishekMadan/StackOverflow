@@ -26,4 +26,5 @@ Lib:
   1. Dagger 2  
 
 Dec 25, 2018:
-- Converting PresentationCompositionRoot to a DaggerComponent.
+- Converting PresentationCompositionRoot to a DaggerComponent (PresentationComponent).
+- Providing ApplicationComponent as dependency to PresentationComponent.
