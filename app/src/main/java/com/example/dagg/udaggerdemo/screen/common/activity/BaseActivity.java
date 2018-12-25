@@ -4,15 +4,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 
 import com.example.dagg.udaggerdemo.injections.Application;
-import com.example.dagg.udaggerdemo.injections.CompositionRoot;
 import com.example.dagg.udaggerdemo.injections.PresentationCompositionRoot;
+import com.example.dagg.udaggerdemo.injections.application.ApplicationComponent;
 
 public class BaseActivity extends AppCompatActivity{
 
     private PresentationCompositionRoot mPresentationCompositionRoot;
 
-    public CompositionRoot getCompositionRoot() {
-        return ((Application) getApplication()).getCompositionRoot();
+    public ApplicationComponent getCompositionRoot() {
+        return ((Application) getApplication()).getApplicationComponent();
     }
 
     public PresentationCompositionRoot getPresentationCompositionRoot() {
