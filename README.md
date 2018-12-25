@@ -24,3 +24,6 @@ Dec 24, 2018:
 - Composition CompositionRoot using Dagger
 Lib:
   1. Dagger 2  
+
+Dec 25, 2018:
+- Converting PresentationCompositionRoot to a DaggerComponent.
