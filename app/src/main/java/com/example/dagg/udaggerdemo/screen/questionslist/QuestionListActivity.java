@@ -15,12 +15,16 @@ import com.example.dagg.udaggerdemo.injections.Application;
 import com.example.dagg.udaggerdemo.model.Question;
 import com.example.dagg.udaggerdemo.network.QuestionsListResponseSchema;
 import com.example.dagg.udaggerdemo.questions.FetchQuesitionList;
+import com.example.dagg.udaggerdemo.screen.common.ImageLoader;
 import com.example.dagg.udaggerdemo.screen.common.activity.BaseActivity;
 import com.example.dagg.udaggerdemo.screen.common.dialogue.DialogManager;
+import com.example.dagg.udaggerdemo.screen.common.mvcview.ViewMvcFactoy;
 import com.example.dagg.udaggerdemo.screen.questionsdetils.QuestionDetailsActivity;
 import com.example.dagg.udaggerdemo.screen.questionsdetils.QuestionDetailsViewMvc;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 
@@ -31,14 +35,23 @@ public class QuestionListActivity extends BaseActivity
     private final int REQUEST_CODE_ASK_PERMISSIONS = 10;
     private final int QUESTION_COUNT_TO_FETCH = 20;
 
-    private FetchQuesitionList mFetchQuestionList;
-    private QuestionsListViewMvc mViewMvc;
-    private DialogManager mDialogueManager;
+    @Inject FetchQuesitionList mFetchQuestionList;
+    @Inject ViewMvcFactoy mViewMvcFactory;
+    @Inject DialogManager mDialogueManager;
+    @Inject ImageLoader mImageLoader;
+    QuestionsListViewMvc mViewMvc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
+    }
+
+    private void init() {
+        getPresentationComponent().inject(this);
+        mViewMvc = mViewMvcFactory.newInstance(QuestionsListViewMvc.class, null, mImageLoader);
+        setContentView(mViewMvc.getRootView());
     }
 
     public void askForPermission() {
@@ -57,14 +70,6 @@ public class QuestionListActivity extends BaseActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         initiateNetworkRequest();
-    }
-
-    private void init() {
-        mViewMvc = getPresentationCompositionRoot().getViewMvcFactory().newInstance(QuestionsListViewMvc.class,
-            null, getPresentationCompositionRoot().getImageLoader());
-        mFetchQuestionList = getCompositionRoot().getQuestionList();
-        mDialogueManager = getPresentationCompositionRoot().getDialogueManager();
-        setContentView(mViewMvc.getRootView());
     }
 
     @Override

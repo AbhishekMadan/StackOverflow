@@ -1,25 +1,28 @@
 package com.example.dagg.udaggerdemo.screen.common.activity;
 
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 
 import com.example.dagg.udaggerdemo.injections.Application;
-import com.example.dagg.udaggerdemo.injections.PresentationCompositionRoot;
 import com.example.dagg.udaggerdemo.injections.application.ApplicationComponent;
+import com.example.dagg.udaggerdemo.injections.presentation.DaggerPresentationComponent;
+import com.example.dagg.udaggerdemo.injections.presentation.PresentationComponent;
+import com.example.dagg.udaggerdemo.injections.presentation.PresentationModule;
 
 public class BaseActivity extends AppCompatActivity{
 
-    private PresentationCompositionRoot mPresentationCompositionRoot;
+    private boolean mIsInjectorUsed;
 
     public ApplicationComponent getCompositionRoot() {
         return ((Application) getApplication()).getApplicationComponent();
     }
 
-    public PresentationCompositionRoot getPresentationCompositionRoot() {
-        if (mPresentationCompositionRoot == null) {
-            mPresentationCompositionRoot = new PresentationCompositionRoot(getSupportFragmentManager(),
-                LayoutInflater.from(this), this);
+    protected PresentationComponent getPresentationComponent() {
+        if (mIsInjectorUsed) {
+            throw new RuntimeException("Activity/Fragment already injected.");
         }
-        return mPresentationCompositionRoot;
+        mIsInjectorUsed = true;
+        return DaggerPresentationComponent.builder()
+            .presentationModule(new PresentationModule(this, getCompositionRoot()))
+            .build();
     }
 }

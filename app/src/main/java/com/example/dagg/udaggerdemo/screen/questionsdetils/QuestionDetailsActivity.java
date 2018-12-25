@@ -6,8 +6,12 @@ import com.example.dagg.udaggerdemo.fragment.ServerErrorDialogFragment;
 import com.example.dagg.udaggerdemo.model.QuestionDetails;
 import com.example.dagg.udaggerdemo.network.SingleQuestionResponseSchema;
 import com.example.dagg.udaggerdemo.questions.FetchQuestionDetails;
+import com.example.dagg.udaggerdemo.screen.common.ImageLoader;
 import com.example.dagg.udaggerdemo.screen.common.activity.BaseActivity;
 import com.example.dagg.udaggerdemo.screen.common.dialogue.DialogManager;
+import com.example.dagg.udaggerdemo.screen.common.mvcview.ViewMvcFactoy;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 
@@ -20,13 +24,14 @@ implements QuestionDetailsViewMvc.Listener, FetchQuestionDetails.Listener {
     private String mQuestionId;
 
     private QuestionDetailsViewMvc mViewMvc;
-    private FetchQuestionDetails mFetchQuestionDetails;
-    private DialogManager mDialogueManager;
+    @Inject FetchQuestionDetails mFetchQuestionDetails;
+    @Inject DialogManager mDialogueManager;
+    @Inject ViewMvcFactoy mViewMvcFactory;
+    @Inject ImageLoader mImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         init();
         //noinspection ConstantConditions
         mQuestionId = getIntent().getExtras().getString(EXTRA_QUESTION_ID);
@@ -34,10 +39,8 @@ implements QuestionDetailsViewMvc.Listener, FetchQuestionDetails.Listener {
     }
 
     public void init() {
-        mViewMvc = getPresentationCompositionRoot().getViewMvcFactory().newInstance(QuestionDetailsViewMvc.class,
-            null, getPresentationCompositionRoot().getImageLoader());
-        mFetchQuestionDetails = getCompositionRoot().getQuestionDetails();
-        mDialogueManager = getPresentationCompositionRoot().getDialogueManager();
+        getPresentationComponent().inject(this);
+        mViewMvc = mViewMvcFactory.newInstance(QuestionDetailsViewMvc.class, null, mImageLoader);
         setContentView(mViewMvc.getRootView());
     }
 
