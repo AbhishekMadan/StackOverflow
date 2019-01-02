@@ -28,3 +28,6 @@ Lib:
 Dec 25, 2018:
 - Converting PresentationCompositionRoot to a DaggerComponent (PresentationComponent).
 - Providing ApplicationComponent as dependency to PresentationComponent.
+
+Jan 1, 2019,
+ - Using Subcomponent to resolve dependency ov PresentationComponent on AppComponent.
