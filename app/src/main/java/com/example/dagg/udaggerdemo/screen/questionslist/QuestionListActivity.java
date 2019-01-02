@@ -6,12 +6,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
 import com.example.dagg.udaggerdemo.fragment.ServerErrorDialogFragment;
-import com.example.dagg.udaggerdemo.injections.Application;
 import com.example.dagg.udaggerdemo.model.Question;
 import com.example.dagg.udaggerdemo.network.QuestionsListResponseSchema;
 import com.example.dagg.udaggerdemo.questions.FetchQuesitionList;
@@ -20,7 +17,6 @@ import com.example.dagg.udaggerdemo.screen.common.activity.BaseActivity;
 import com.example.dagg.udaggerdemo.screen.common.dialogue.DialogManager;
 import com.example.dagg.udaggerdemo.screen.common.mvcview.ViewMvcFactoy;
 import com.example.dagg.udaggerdemo.screen.questionsdetils.QuestionDetailsActivity;
-import com.example.dagg.udaggerdemo.screen.questionsdetils.QuestionDetailsViewMvc;
 
 import java.util.List;
 

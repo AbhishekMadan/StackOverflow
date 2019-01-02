@@ -36,11 +36,6 @@ public class PresentationModule {
     }
 
     @Provides
-    public ViewMvcFactoy getViewMvcFactory(LayoutInflater layoutInflater) {
-        return new ViewMvcFactoy(layoutInflater);
-    }
-
-    @Provides
     public ImageLoader getImageLoader() {
         return new ImageLoader(mActivity);
     }

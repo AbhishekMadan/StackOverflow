@@ -9,10 +9,13 @@ import com.example.dagg.udaggerdemo.screen.questionsdetils.QuestionDetailsViewMv
 import com.example.dagg.udaggerdemo.screen.questionsdetils.QuestionDetailsViewMvcImpl;
 import com.example.dagg.udaggerdemo.screen.questionslist.QuestionsListViewMvcImpl;
 
+import javax.inject.Inject;
+
 public class ViewMvcFactoy {
 
     private LayoutInflater mLayoutInflater;
 
+    @Inject
     public ViewMvcFactoy(LayoutInflater layoutInflater) {
         mLayoutInflater = layoutInflater;
     }
