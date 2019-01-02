@@ -16,20 +16,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApplicationModule {
 
     @Provides
-    Retrofit getRetrofit() {
-        return new Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-    }
-
-    @Provides
-    @Singleton
-    StackoverflowApi getStackOverflowApi(Retrofit retrofit) {
-        return retrofit.create(StackoverflowApi.class);
-    }
-
-    @Provides
     public FetchQuesitionList getQuestionList(StackoverflowApi stackoverflowApi) {
         return new FetchQuesitionList(stackoverflowApi);
     }

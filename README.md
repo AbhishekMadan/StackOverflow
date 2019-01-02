@@ -30,4 +30,5 @@ Dec 25, 2018:
 - Providing ApplicationComponent as dependency to PresentationComponent.
 
 Jan 1, 2019,
- - Using Subcomponent to resolve dependency ov PresentationComponent on AppComponent.
+ - Using Subcomponent to resolve dependency of PresentationComponent on AppComponent.
+ - Move network related provider to a separate network module. 
